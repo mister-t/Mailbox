@@ -107,6 +107,13 @@ class MailboxViewController: UIViewController {
             return false
         }
         
+        func shouldCloseTheMsgView (xOrigin: CGFloat, minLeftTransitionDistance: CGFloat) -> Bool {
+            if abs(xOrigin) < minLeftTransitionDistance {
+                return true
+            }
+            return false
+        }
+        
         if sender.state == UIGestureRecognizerState.Began {
             //Save the single message view container's original center
             singleMsgContainerOriginalCenter = singleMsgContainerView.center
@@ -228,13 +235,12 @@ class MailboxViewController: UIViewController {
             print("panning ENDED")
             print("panning x \(abs(singleMsgContainerView.frame.origin.x))")
             
-            if abs(singleMsgContainerView.frame.origin.x) < minLeftTransitionDistance {
+            if shouldCloseTheMsgView(singleMsgContainerView.frame.origin.x,minLeftTransitionDistance: minLeftTransitionDistance) {
                 laterIconImageView.alpha = 0
                 // Animate the message back into its original position
                 UIView.animateWithDuration(0.2, animations: { () -> Void in
                     self.singleMsgContainerView.frame.origin.x = self.singleMsgContainerView.frame.size.width - 320
                 })
-
             }
             
         }
