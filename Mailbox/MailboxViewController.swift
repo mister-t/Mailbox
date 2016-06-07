@@ -44,6 +44,7 @@ class MailboxViewController: UIViewController {
             return true
         }
     }
+
     
     @IBAction func didPanSingleMsgContainer(sender: UIPanGestureRecognizer) {
       let translation = sender.translationInView(view)
@@ -55,9 +56,56 @@ class MailboxViewController: UIViewController {
       let laterIconOffset = CGFloat(10.0)
       let leftSwipeIconPos = singleMsgView.frame.origin.x + singleMsgView.frame.size.width + laterIconOffset
       let rightSwipeIconPos = singleMsgView.frame.origin.x + singleMsgView.frame.size.width - 360
-        
+
+      //current x distance made to the left
+      var xOriginalDistance = singleMsgContainerView.frame.origin.x
+      var xDistance = abs(singleMsgContainerView.frame.origin.x) //using absolute value for easier logical statement
+
       //use velocity to deterimine if it's going left or right
       let velocity = sender.velocityInView(view)
+        
+        
+      func isLTMinLeftDist (xDistance: CGFloat, minDistanceLeftSwipe: CGFloat) -> Bool {
+          if xDistance > 0 &&  xDistance < minDistanceLeftSwipe {
+              return true
+          }
+          return false
+      }
+        
+        func isGTMinRightDist (xOriginalDistance: CGFloat, xDistance: CGFloat, minDistanceLeftSwipe: CGFloat) -> Bool {
+            if xOriginalDistance > 0 && xDistance > minDistanceLeftSwipe {
+                return true
+            }
+            return false
+        }
+        
+        func isBetweenLeftTransition (xDistance: CGFloat, minDistanceLeftSwipe: CGFloat, minLeftTransitionDistance: CGFloat, minLeftListingDistance: CGFloat) -> Bool {
+            if (xDistance > minDistanceLeftSwipe && xDistance < minLeftTransitionDistance) || (xDistance < minLeftListingDistance && xDistance > minLeftTransitionDistance) {
+                return true
+            }
+            return false
+        }
+
+        func isBetweenRightTransition (xOriginalDistance: CGFloat, xDistance: CGFloat, minDistanceLeftSwipe: CGFloat, minLeftTransitionDistance: CGFloat, minLeftListingDistance: CGFloat) -> Bool {
+            if (xOriginalDistance > 0 && xDistance < minDistanceLeftSwipe && xDistance > minLeftTransitionDistance) || (xOriginalDistance > 0 && xDistance > minLeftListingDistance && xDistance < minLeftTransitionDistance) {
+                return true
+            }
+            return false
+        }
+        
+        func isFullLeftTransition (xDistance: CGFloat, minLeftListingDistance: CGFloat) -> Bool {
+           if xDistance > minLeftListingDistance {
+                return true
+            }
+            return false
+        }
+        
+        func isFullRightTransition (xOriginalDistance: CGFloat, xDistance: CGFloat, minLeftListingDistance: CGFloat) -> Bool {
+            if xOriginalDistance > 0 && xDistance < minLeftListingDistance {
+                return true
+            }
+            return false
+        }
         
         if sender.state == UIGestureRecognizerState.Began {
             //Save the single message view container's original center
@@ -69,15 +117,11 @@ class MailboxViewController: UIViewController {
             print("panning ORIGINAL x \(singleMsgContainerView.frame.origin.x)")
             print("panning x \(abs(singleMsgContainerView.frame.origin.x))")
             
-            //current x distance made to the left
-            var xOriginalDistance = singleMsgContainerView.frame.origin.x
-            var xDistance = abs(singleMsgContainerView.frame.origin.x) //using absolute value for easier logical statement
 
             /*
                 going LEFT - original x is less than 0
             */
-            if xDistance > 0 &&  xDistance < minDistanceLeftSwipe {
-                
+            if isLTMinLeftDist(xDistance, minDistanceLeftSwipe: minDistanceLeftSwipe) {
                 //animate the later icon
                 UIView.animateWithDuration(0.3, animations: { () -> Void in
                     self.laterIconImageView.alpha = 1
@@ -88,7 +132,7 @@ class MailboxViewController: UIViewController {
                 self.view.backgroundColor = UIColor.lightGrayColor()
             }
             
-            if (xDistance > minDistanceLeftSwipe && xDistance < minLeftTransitionDistance) || (xDistance < minLeftListingDistance && xDistance > minLeftTransitionDistance) {
+            if isBetweenLeftTransition(xDistance, minDistanceLeftSwipe: minDistanceLeftSwipe, minLeftTransitionDistance: minLeftTransitionDistance, minLeftListingDistance: minLeftListingDistance) {
                 //initialize the later icon position
                 laterIconImageView.frame.origin.x = leftSwipeIconPos
                 
@@ -106,7 +150,7 @@ class MailboxViewController: UIViewController {
                 self.laterIconImageView.frame = laterIconImageView.frame
             }
             
-            if xDistance > minLeftListingDistance {
+            if isFullLeftTransition(xDistance, minLeftListingDistance: minLeftListingDistance) {
                 //hide the later icon
                 laterIconImageView.alpha = 0
             
@@ -132,8 +176,7 @@ class MailboxViewController: UIViewController {
             minLeftTransitionDistance = -1 * minLeftTransitionDistance
             minLeftListingDistance = -1 * minLeftListingDistance
             
-            if xOriginalDistance > 0 && xDistance > minDistanceLeftSwipe {
-                
+            if isGTMinRightDist(xOriginalDistance, xDistance: xDistance, minDistanceLeftSwipe: minDistanceLeftSwipe) {
                 //animate the later icon
                 UIView.animateWithDuration(0.3, animations: { () -> Void in
                     self.archiveIconImageView.alpha = 1
@@ -144,7 +187,7 @@ class MailboxViewController: UIViewController {
                 self.view.backgroundColor = UIColor.lightGrayColor()
             }
             
-            if (xOriginalDistance > 0 && xDistance < minDistanceLeftSwipe && xDistance > minLeftTransitionDistance) || (xOriginalDistance > 0 && xDistance > minLeftListingDistance && xDistance < minLeftTransitionDistance) {
+            if isBetweenRightTransition(xOriginalDistance, xDistance: xDistance, minDistanceLeftSwipe: minDistanceLeftSwipe, minLeftTransitionDistance: minLeftTransitionDistance, minLeftListingDistance: minLeftListingDistance) {
                 //initialize the archive icon position
                 archiveIconImageView.frame.origin.x = rightSwipeIconPos
                 
@@ -162,7 +205,7 @@ class MailboxViewController: UIViewController {
                 self.archiveIconImageView.frame = archiveIconImageView.frame
             }
             
-            if xOriginalDistance > 0 && xDistance < minLeftListingDistance {
+            if isFullRightTransition(xOriginalDistance, xDistance: xDistance, minLeftListingDistance: minLeftListingDistance) {
                 //hide the archive icon
                 archiveIconImageView.alpha = 0
                 
