@@ -35,22 +35,36 @@ class MailboxViewController: UIViewController {
     
     @IBAction func didPanSingleMsgContainer(sender: UIPanGestureRecognizer) {
       let translation = sender.translationInView(view)
+      
+      //Offset constants for left swipe
+      let minLeftTransitionDistance = CGFloat(60.0)
+      let minDistanceLeftSwipe = CGFloat(40.0)
+      let laterIconOffset = CGFloat(30.0)
+      let laterIconPos = singleMsgContainerView.frame.origin.x + singleMsgContainerView.frame.size.width + laterIconOffset
+        
+      //use velocity to deterimine if it's going left or right
+      let velocity = sender.velocityInView(view)
+        
+
         
         if sender.state == UIGestureRecognizerState.Began {
             //Save the single message view container's original center
             singleMsgContainerOriginalCenter = singleMsgContainerView.center
             
-            //Update the background color to gray when the panning starts
-            self.view.backgroundColor = UIColor.lightGrayColor()
+            if abs(singleMsgContainerView.frame.origin.x) < minDistanceLeftSwipe {
+                //Update the background color to gray when the panning starts
+                print("updating background color to gray")
+                self.view.backgroundColor = UIColor.lightGrayColor()
+            }
             print("panning BEGAN")
         } else if sender.state == UIGestureRecognizerState.Changed {
             print("panning CHANGED")
             singleMsgContainerView.center = CGPoint(x: singleMsgContainerOriginalCenter.x + translation.x, y: singleMsgContainerOriginalCenter.y)
         } else if sender.state == UIGestureRecognizerState.Ended {
             print("panning ENDED")
-            print("panning x \(singleMsgContainerView.frame.origin.x)")
+            print("panning x \(abs(singleMsgContainerView.frame.origin.x))")
             
-            if abs(singleMsgContainerView.frame.origin.x) < 60 {
+            if abs(singleMsgContainerView.frame.origin.x) < minLeftTransitionDistance {
                 
                 // Animate the message back into its original position
                 UIView.animateWithDuration(0.2, animations: { () -> Void in
