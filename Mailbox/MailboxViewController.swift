@@ -66,13 +66,15 @@ class MailboxViewController: UIViewController {
             print("panning BEGAN")
         } else if sender.state == UIGestureRecognizerState.Changed {
             print("panning CHANGED")
+            print("panning ORIGINAL x \(singleMsgContainerView.frame.origin.x)")
             print("panning x \(abs(singleMsgContainerView.frame.origin.x))")
             
             //current x distance made to the left
-            var xDistance = abs(singleMsgContainerView.frame.origin.x)
+            var xOriginalDistance = singleMsgContainerView.frame.origin.x
+            var xDistance = abs(singleMsgContainerView.frame.origin.x) //using absolute value for easier logical statement
 
             /*
-                going LEFT
+                going LEFT - original x is less than 0
             */
             if xDistance > 0 &&  xDistance < minDistanceLeftSwipe {
                 
@@ -123,14 +125,14 @@ class MailboxViewController: UIViewController {
             
             
             /*
-                going RIGHT
+                going RIGHT - original x is always greater than 0
             */
             xDistance = -1 * xDistance
             minDistanceLeftSwipe = -1 * minDistanceLeftSwipe
             minLeftTransitionDistance = -1 * minLeftTransitionDistance
             minLeftListingDistance = -1 * minLeftListingDistance
             
-            if xDistance > minDistanceLeftSwipe {
+            if xOriginalDistance > 0 && xDistance > minDistanceLeftSwipe {
                 
                 //animate the later icon
                 UIView.animateWithDuration(0.3, animations: { () -> Void in
@@ -142,7 +144,7 @@ class MailboxViewController: UIViewController {
                 self.view.backgroundColor = UIColor.lightGrayColor()
             }
             
-            if (xDistance < minDistanceLeftSwipe && xDistance > minLeftTransitionDistance) || (xDistance > minLeftListingDistance && xDistance < minLeftTransitionDistance) {
+            if (xOriginalDistance > 0 && xDistance < minDistanceLeftSwipe && xDistance > minLeftTransitionDistance) || (xOriginalDistance > 0 && xDistance > minLeftListingDistance && xDistance < minLeftTransitionDistance) {
                 //initialize the archive icon position
                 archiveIconImageView.frame.origin.x = rightSwipeIconPos
                 
@@ -160,7 +162,7 @@ class MailboxViewController: UIViewController {
                 self.archiveIconImageView.frame = archiveIconImageView.frame
             }
             
-            if xDistance < minLeftListingDistance {
+            if xOriginalDistance > 0 && xDistance < minLeftListingDistance {
                 //hide the archive icon
                 archiveIconImageView.alpha = 0
                 
