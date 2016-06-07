@@ -33,6 +33,14 @@
                                         <rect key="frame" x="0.0" y="139" width="320" height="81"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
+                                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="archive_icon" id="hbf-r6-DRP">
+                                                <rect key="frame" x="23" y="30" width="25" height="25"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                            </imageView>
+                                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="delete_icon" id="ST7-pv-xMU">
+                                                <rect key="frame" x="31" y="28" width="25" height="25"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                            </imageView>
                                             <imageView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="later_icon" id="6JO-jR-n2s">
                                                 <rect key="frame" x="277" y="32" width="25" height="25"/>
                                                 <autoresizingMask key="autoresizingMask"/>
@@ -64,6 +72,8 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="568"/>
                     <connections>
+                        <outlet property="archiveIconImageView" destination="hbf-r6-DRP" id="GXg-JV-dG1"/>
+                        <outlet property="deleteIconImageView" destination="ST7-pv-xMU" id="fRI-GL-XuU"/>
                         <outlet property="feedMessageView" destination="3t2-wr-hgs" id="3dc-cn-A8s"/>
                         <outlet property="laterIconImageView" destination="6JO-jR-n2s" id="To6-Rf-euH"/>
                         <outlet property="listIconImageView" destination="9PM-80-gnG" id="uvK-KI-Pfe"/>
@@ -83,6 +93,8 @@
         </scene>
     </scenes>
     <resources>
+        <image name="archive_icon" width="25" height="25"/>
+        <image name="delete_icon" width="25" height="25"/>
         <image name="feed" width="320" height="1202"/>
         <image name="help_label" width="320" height="37"/>
         <image name="later_icon" width="25" height="25"/>
