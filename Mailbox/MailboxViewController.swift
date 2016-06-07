@@ -25,6 +25,10 @@ class MailboxViewController: UIViewController {
     @IBOutlet weak var rescheduleImageView: UIImageView!
     @IBOutlet weak var listImageView: UIImageView!
     
+    var xOriginalDistance: CGFloat = 0.0
+    var yOriginalDistance: CGFloat = 0.0
+    var originCenter: CGPoint
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -53,6 +57,25 @@ class MailboxViewController: UIViewController {
         self.rescheduleImageView.alpha = 0.0
     }
     
+    @IBAction func onResetViewsBtn(sender: AnyObject) {
+        //Reset message view
+//        self.singleMsgContainerView.frame.origin.x = 0.0
+//        self.singleMsgContainerView.frame.origin.y = 130.0
+        self.singleMsgContainerView.frame.origin = originCenter
+        self.singleMsgContainerView.alpha = 1.0
+        
+        //Reset feedview
+        self.feedMessageView.frame.origin.y += 81
+        self.view.backgroundColor = UIColor.whiteColor()
+        
+        //hide the later icon
+        laterIconImageView.alpha = 0
+        
+        //hide the listing icon
+        listIconImageView.alpha = 0
+    
+    }
+    
     @IBAction func didPanSingleMsgContainer(sender: UIPanGestureRecognizer) {
       let translation = sender.translationInView(view)
       
@@ -65,7 +88,10 @@ class MailboxViewController: UIViewController {
       let rightSwipeIconPos = singleMsgView.frame.origin.x + singleMsgView.frame.size.width - 360
 
       //current x distance made to the left
-      var xOriginalDistance = singleMsgContainerView.frame.origin.x
+      originCenter = singleMsgContainerView.frame.origin
+      xOriginalDistance = singleMsgContainerView.frame.origin.x
+      yOriginalDistance = singleMsgContainerView.frame.origin.y
+        
       var xDistance = abs(singleMsgContainerView.frame.origin.x) //using absolute value for easier logical statement
 
       //use velocity to deterimine if it's going left or right
