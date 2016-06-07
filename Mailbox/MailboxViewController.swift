@@ -27,7 +27,7 @@ class MailboxViewController: UIViewController {
     
     var xOriginalDistance: CGFloat = 0.0
     var yOriginalDistance: CGFloat = 0.0
-    var originCenter: CGPoint
+    var originCenter: CGPoint = CGPoint(x: 0, y: 0)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,6 +62,7 @@ class MailboxViewController: UIViewController {
 //        self.singleMsgContainerView.frame.origin.x = 0.0
 //        self.singleMsgContainerView.frame.origin.y = 130.0
         self.singleMsgContainerView.frame.origin = originCenter
+//                self.singleMsgContainerView.frame.origin.y += 10.0
         self.singleMsgContainerView.alpha = 1.0
         
         //Reset feedview
