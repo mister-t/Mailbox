@@ -72,6 +72,13 @@
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                     </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="gCj-bI-ST8">
+                                        <rect key="frame" x="8" y="69" width="311" height="62"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <connections>
+                                            <action selector="onCloseRescheduleBtn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="JxC-OS-deH"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                             </scrollView>
                         </subviews>
@@ -85,6 +92,8 @@
                         <outlet property="feedMessageView" destination="3t2-wr-hgs" id="3dc-cn-A8s"/>
                         <outlet property="laterIconImageView" destination="6JO-jR-n2s" id="To6-Rf-euH"/>
                         <outlet property="listIconImageView" destination="9PM-80-gnG" id="uvK-KI-Pfe"/>
+                        <outlet property="listImageView" destination="Scc-qC-esB" id="ddi-Es-pxq"/>
+                        <outlet property="rescheduleImageView" destination="33v-An-8XV" id="f8F-in-crs"/>
                         <outlet property="scrollView" destination="9qv-4j-Wcv" id="GpM-zU-bRS"/>
                         <outlet property="singleMsgContainerView" destination="Ucx-4k-YeM" id="ErW-Vg-xxk"/>
                         <outlet property="singleMsgView" destination="pAv-4D-Yrf" id="G6d-86-d6p"/>

@@ -22,6 +22,9 @@ class MailboxViewController: UIViewController {
     @IBOutlet weak var laterIconImageView: UIImageView!
     @IBOutlet weak var listIconImageView: UIImageView!
     
+    @IBOutlet weak var rescheduleImageView: UIImageView!
+    @IBOutlet weak var listImageView: UIImageView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -45,6 +48,10 @@ class MailboxViewController: UIViewController {
         }
     }
 
+    @IBAction func onCloseRescheduleBtn(sender: AnyObject) {
+        self.listImageView.alpha = 0.0
+        self.rescheduleImageView.alpha = 0.0
+    }
     
     @IBAction func didPanSingleMsgContainer(sender: UIPanGestureRecognizer) {
       let translation = sender.translationInView(view)
@@ -235,14 +242,54 @@ class MailboxViewController: UIViewController {
             print("panning ENDED")
             print("panning x \(abs(singleMsgContainerView.frame.origin.x))")
             
-            if shouldCloseTheMsgView(singleMsgContainerView.frame.origin.x,minLeftTransitionDistance: minLeftTransitionDistance) {
-                laterIconImageView.alpha = 0
-                // Animate the message back into its original position
-                UIView.animateWithDuration(0.2, animations: { () -> Void in
-                    self.singleMsgContainerView.frame.origin.x = self.singleMsgContainerView.frame.size.width - 320
-                })
+            if isGoingLeft(velocity) {
+                print("need to close the LEFT side")
+                //Reverses the values from having to check the RIGHT side in the "changed" state
+                if isLTMinLeftDist(xDistance, minDistanceLeftSwipe: minDistanceLeftSwipe) {
+                    // Animate the message back into its original position
+                    UIView.animateWithDuration(0.2, animations: { () -> Void in
+                        self.listImageView.alpha = 0.0
+                        self.rescheduleImageView.alpha = 0.0
+                        self.singleMsgContainerView.frame.origin.x = self.singleMsgContainerView.frame.size.width - 320
+                    })
+                }
+                
+                if isBetweenLeftTransition(xDistance, minDistanceLeftSwipe: minDistanceLeftSwipe, minLeftTransitionDistance: minLeftTransitionDistance, minLeftListingDistance: minLeftListingDistance) {
+                    UIView.animateWithDuration(0.2, animations: { () -> Void in
+                        self.listImageView.alpha = 0.0
+                        self.rescheduleImageView.alpha = 1.0
+                    })
+                }
+                
+                if isFullLeftTransition(xDistance, minLeftListingDistance: minLeftListingDistance) {
+                    UIView.animateWithDuration(0.2, animations: { () -> Void in
+                        self.listImageView.alpha = 1.0
+                        self.rescheduleImageView.alpha = 0.0
+                    })
+                }
+            } else {
+                xDistance = -1 * xDistance
+                minDistanceLeftSwipe = -1 * minDistanceLeftSwipe
+                minLeftTransitionDistance = -1 * minLeftTransitionDistance
+                minLeftListingDistance = -1 * minLeftListingDistance
+
+                print("need to close the RIGHT side")
+                if isGTMinRightDist(xOriginalDistance, xDistance: xDistance, minDistanceLeftSwipe: minDistanceLeftSwipe) {
+                    // Animate the message back into its original position
+                    UIView.animateWithDuration(0.2, animations: { () -> Void in
+                        self.singleMsgContainerView.frame.origin.x = self.singleMsgContainerView.frame.size.width - 320
+                    })
+                }
+                
+                if isBetweenRightTransition(xOriginalDistance, xDistance: xDistance, minDistanceLeftSwipe: minDistanceLeftSwipe, minLeftTransitionDistance: minLeftTransitionDistance, minLeftListingDistance: minLeftListingDistance) {
+                    
+                }
+                
+                if isFullRightTransition(xOriginalDistance, xDistance: xDistance, minLeftListingDistance: minLeftListingDistance) {
+                
+                }
+                
             }
-            
         }
     }
 
