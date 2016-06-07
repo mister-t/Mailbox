@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Foundation
 
 class MailboxViewController: UIViewController {
     @IBOutlet weak var singleMsgView: UIImageView!
@@ -48,8 +49,14 @@ class MailboxViewController: UIViewController {
         } else if sender.state == UIGestureRecognizerState.Ended {
             print("panning ENDED")
             print("panning x \(singleMsgContainerView.frame.origin.x)")
-            if singleMsgContainerView.frame.origin.x > -60 {
-                singleMsgContainerView.center = CGPoint(x: singleMsgContainerOriginalCenter.x, y: singleMsgContainerOriginalCenter.y)
+            
+            if abs(singleMsgContainerView.frame.origin.x) < 60 {
+                
+                // Animate the message back into its original position
+                UIView.animateWithDuration(0.2, animations: { () -> Void in
+                    self.singleMsgContainerView.frame.origin.x = self.singleMsgContainerView.frame.size.width - 320
+                })
+
             }
             
         }
