@@ -33,6 +33,14 @@
                                         <rect key="frame" x="0.0" y="139" width="320" height="81"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
+                                            <imageView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="later_icon" id="6JO-jR-n2s">
+                                                <rect key="frame" x="277" y="32" width="25" height="25"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                            </imageView>
+                                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="list_icon" id="9PM-80-gnG">
+                                                <rect key="frame" x="277" y="32" width="25" height="25"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                            </imageView>
                                             <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="top" image="message" id="pAv-4D-Yrf">
                                                 <rect key="frame" x="0.0" y="0.0" width="320" height="81"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -57,6 +65,8 @@
                     <size key="freeformSize" width="320" height="568"/>
                     <connections>
                         <outlet property="feedMessageView" destination="3t2-wr-hgs" id="3dc-cn-A8s"/>
+                        <outlet property="laterIconImageView" destination="6JO-jR-n2s" id="To6-Rf-euH"/>
+                        <outlet property="listIconImageView" destination="9PM-80-gnG" id="uvK-KI-Pfe"/>
                         <outlet property="scrollView" destination="9qv-4j-Wcv" id="GpM-zU-bRS"/>
                         <outlet property="singleMsgContainerView" destination="Ucx-4k-YeM" id="ErW-Vg-xxk"/>
                         <outlet property="singleMsgView" destination="pAv-4D-Yrf" id="G6d-86-d6p"/>
@@ -75,6 +85,8 @@
     <resources>
         <image name="feed" width="320" height="1202"/>
         <image name="help_label" width="320" height="37"/>
+        <image name="later_icon" width="25" height="25"/>
+        <image name="list_icon" width="25" height="25"/>
         <image name="message" width="320" height="86"/>
         <image name="nav" width="320" height="65"/>
         <image name="search" width="320" height="42"/>
