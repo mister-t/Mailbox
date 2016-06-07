@@ -282,11 +282,27 @@ class MailboxViewController: UIViewController {
                 }
                 
                 if isBetweenRightTransition(xOriginalDistance, xDistance: xDistance, minDistanceLeftSwipe: minDistanceLeftSwipe, minLeftTransitionDistance: minLeftTransitionDistance, minLeftListingDistance: minLeftListingDistance) {
-                    
+                    //hide the message
+                    UIView.animateWithDuration(0.2, animations: { () -> Void in
+                        self.singleMsgContainerView.frame.origin.x = self.singleMsgContainerView.frame.size.width - 320
+                        self.singleMsgContainerView.alpha = 0.0
+                        
+                        //hide the message
+                        self.feedMessageView.frame.origin.y -= 81
+                        self.view.backgroundColor = UIColor.whiteColor()
+                    })
                 }
                 
                 if isFullRightTransition(xOriginalDistance, xDistance: xDistance, minLeftListingDistance: minLeftListingDistance) {
-                
+                    //hide the message
+                    UIView.animateWithDuration(0.2, animations: { () -> Void in
+                        self.singleMsgContainerView.frame.origin.x = self.singleMsgContainerView.frame.size.width - 320
+                        self.singleMsgContainerView.alpha = 0.0
+                        
+                        //hide the message
+                        self.feedMessageView.frame.origin.y -= 81
+                        self.view.backgroundColor = UIColor.whiteColor()
+                    })
                 }
                 
             }
